@@ -1,2 +1,2 @@
-# para-ett-user-service
-User Service for the para-ett project.
+# para-ett-users-service
+Users Service for the para-ett project.
