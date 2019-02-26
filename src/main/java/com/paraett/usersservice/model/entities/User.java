@@ -17,7 +17,10 @@ public class  User {
     private Long id;
 
     @Column(nullable = false, length = 100)
-    private String username;
+    private String firstName;
+
+    @Column(nullable = false, length = 100)
+    private String lastName;
 
     @Column(unique = true, nullable = false, length = 50)
     private String email;
@@ -47,7 +50,10 @@ public class  User {
     private Date currentLoginDate;
 
     @Column(name="manager_id")
-    private Long managerId;
+    private Integer managerId;
+
+    @Column(name = "company_id")
+    private Integer companyId;
 
     @Column
     private Integer norm;
@@ -63,12 +69,20 @@ public class  User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -127,12 +141,20 @@ public class  User {
         this.currentLoginDate = currentLoginDate;
     }
 
-    public Long getManagerId() {
+    public Integer getManagerId() {
         return managerId;
     }
 
-    public void setManagerId(Long managerId) {
+    public void setManagerId(Integer managerId) {
         this.managerId = managerId;
+    }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
     }
 
     public Integer getNorm() {
@@ -154,8 +176,9 @@ public class  User {
     public User() {
     }
 
-    public User(String username, String email, UserType type, boolean enabled, String password, Date lastPasswordResetDate, Date lastLoginDate, Date currentLoginDate, Long managerId, Integer norm, Double salary) {
-        this.username = username;
+    public User(String firstName, String lastName, String email, UserType type, boolean enabled, String password, Date lastPasswordResetDate, Date lastLoginDate, Date currentLoginDate, Integer managerId, Integer companyId, Integer norm, Double salary) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
         this.type = type;
         this.enabled = enabled;
@@ -164,6 +187,7 @@ public class  User {
         this.lastLoginDate = lastLoginDate;
         this.currentLoginDate = currentLoginDate;
         this.managerId = managerId;
+        this.companyId = companyId;
         this.norm = norm;
         this.salary = salary;
     }
