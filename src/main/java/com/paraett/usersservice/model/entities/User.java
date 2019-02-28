@@ -50,10 +50,10 @@ public class  User {
     private Date currentLoginDate;
 
     @Column(name="manager_id")
-    private Integer managerId;
+    private Long managerId;
 
-    @Column(name = "company_id")
-    private Integer companyId;
+    @Column(name="company_id")
+    private Long companyId;
 
     @Column
     private Integer norm;
@@ -141,19 +141,19 @@ public class  User {
         this.currentLoginDate = currentLoginDate;
     }
 
-    public Integer getManagerId() {
+    public Long getManagerId() {
         return managerId;
     }
 
-    public void setManagerId(Integer managerId) {
+    public void setManagerId(Long managerId) {
         this.managerId = managerId;
     }
 
-    public Integer getCompanyId() {
+    public Long getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(Integer companyId) {
+    public void setCompanyId(Long companyId) {
         this.companyId = companyId;
     }
 
@@ -176,7 +176,7 @@ public class  User {
     public User() {
     }
 
-    public User(String firstName, String lastName, String email, UserType type, boolean enabled, String password, Date lastPasswordResetDate, Date lastLoginDate, Date currentLoginDate, Integer managerId, Integer companyId, Integer norm, Double salary) {
+    public User(String firstName, String lastName, String email, UserType type, boolean enabled, String password, Date lastPasswordResetDate, Date lastLoginDate, Date currentLoginDate, Long managerId, Long companyId, Integer norm, Double salary) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;

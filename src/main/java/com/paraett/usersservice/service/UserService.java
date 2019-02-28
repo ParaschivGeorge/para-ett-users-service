@@ -19,8 +19,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User registerOwner(OwnerRegisterUserDto ownerRegisterUserDto, Integer companyId) {
-        User user = this.userRepository.save(new User(
+    public User registerOwner(OwnerRegisterUserDto ownerRegisterUserDto, Long companyId) {
+        User user = new User(
                 ownerRegisterUserDto.getFirstName(),
                 ownerRegisterUserDto.getLastName(),
                 ownerRegisterUserDto.getEmail(),
@@ -33,7 +33,8 @@ public class UserService {
                 null,
                 companyId,
                 ownerRegisterUserDto.getNorm(),
-                ownerRegisterUserDto.getSalary()));
+                ownerRegisterUserDto.getSalary());
+        user = this.userRepository.save(user);
 
         return user;
     }

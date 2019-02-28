@@ -20,7 +20,7 @@ public class UserController {
     }
 
     @PostMapping("/registerOwner")
-    public ResponseEntity<User> registerOwner(@RequestBody OwnerRegisterUserDto ownerRegisterUserDto, @RequestParam Integer companyId) {
+    public ResponseEntity<User> registerOwner(@RequestBody OwnerRegisterUserDto ownerRegisterUserDto, @RequestParam Long companyId) {
         User user = this.userService.registerOwner(ownerRegisterUserDto, companyId);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId())
                 .toUri();
