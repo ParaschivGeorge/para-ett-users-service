@@ -1,5 +1,6 @@
 package com.paraett.usersservice.controller;
 
+import com.paraett.usersservice.model.dtos.MassRegisterUserDto;
 import com.paraett.usersservice.model.dtos.OwnerRegisterUserDto;
 import com.paraett.usersservice.model.entities.User;
 import com.paraett.usersservice.service.UserService;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
@@ -26,5 +28,14 @@ public class UserController {
                 .toUri();
 
         return ResponseEntity.created(location).body(user);
+    }
+
+    @PostMapping("/massRegister")
+    public ResponseEntity<List<User>> massRegister(@RequestBody List<MassRegisterUserDto> massRegisterUserDtoList, @RequestParam Long companyId) {
+        List<User> users = this.userService.massRegister(massRegisterUserDtoList, companyId);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/users").queryParam("companyId", companyId).build().toUri();
+
+        return ResponseEntity.created(location).body(users);
     }
 }
