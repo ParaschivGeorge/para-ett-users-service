@@ -2,6 +2,7 @@ package com.paraett.usersservice.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.paraett.usersservice.model.enums.UserType;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "user_tbl")
+@DynamicUpdate
 public class  User {
 
     @Id

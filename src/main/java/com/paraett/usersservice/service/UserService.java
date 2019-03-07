@@ -1,5 +1,7 @@
 package com.paraett.usersservice.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paraett.usersservice.exception.ActivationCodeInvalidException;
 import com.paraett.usersservice.exception.UserNotFoundException;
 import com.paraett.usersservice.model.dtos.AccountActivationUserDto;
@@ -8,12 +10,15 @@ import com.paraett.usersservice.model.dtos.OwnerRegisterUserDto;
 import com.paraett.usersservice.model.entities.User;
 import com.paraett.usersservice.model.enums.UserType;
 import com.paraett.usersservice.repository.UserRepository;
+import com.paraett.usersservice.repository.UserSpecifications;
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.client.HttpClientErrorException;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,9 +29,11 @@ public class UserService {
 
     private UserRepository userRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+    private ObjectMapper objectMapper;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, ObjectMapper objectMapper) {
         this.userRepository = userRepository;
+        this.objectMapper = objectMapper;
     }
 
     public User registerOwner(OwnerRegisterUserDto ownerRegisterUserDto, Long companyId) {
@@ -126,5 +133,70 @@ public class UserService {
         } else {
             throw new UserNotFoundException("email: " + accountActivationUserDto.getEmail());
         }
+    }
+
+    public List<User> getAllUsers(Long companyId, Long managerId) {
+        return this.userRepository.findAll(UserSpecifications.findAllFiltered(companyId, managerId));
+    }
+
+    public User getUser(Long id) {
+        Optional<User> optionalUser = this.userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            return optionalUser.get();
+        }
+        throw new UserNotFoundException("id: " + id);
+    }
+
+    public User updateUser(Long id, User updatedUser) {
+        Optional<User> optionalUser = this.userRepository.findById(id);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            if (updatedUser.getType() != null) {
+                user.setType(updatedUser.getType());
+            }
+            if (updatedUser.getEmail() != null && !userRepository.findByEmail(updatedUser.getEmail()).isPresent()) {
+                user.setEmail(updatedUser.getEmail());
+            }
+            if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
+                user.setPassword(bCryptPasswordEncoder.encode(updatedUser.getPassword()));
+            }
+            if (updatedUser.getFirstName() != null && !updatedUser.getFirstName().isEmpty()) {
+                user.setFirstName(updatedUser.getFirstName());
+            }
+            if (updatedUser.getLastName() != null && !updatedUser.getLastName().isEmpty()) {
+                user.setLastName(updatedUser.getLastName());
+            }
+            if (updatedUser.getManagerId() != null) {
+                Optional<User> optionalManager = this.userRepository.findById(updatedUser.getManagerId());
+                if (optionalManager.isPresent()) {
+                    user.setManagerId(updatedUser.getManagerId());
+                } else {
+                    throw new UserNotFoundException("manager id: " + updatedUser.getManagerId());
+                }
+            }
+            if (updatedUser.getCompanyId() != null) {
+                user.setCompanyId(updatedUser.getCompanyId());
+            }
+            if (updatedUser.getNorm() != null) {
+                user.setNorm(updatedUser.getNorm());
+            }
+            if (updatedUser.getSalary() != null) {
+                user.setSalary(updatedUser.getSalary());
+            }
+            return this.userRepository.save(user);
+        }
+        throw new UserNotFoundException("id: " + id);
+    }
+
+    public void deleteUser(Long id) {
+        if (this.userRepository.findById(id).isPresent()) {
+            this.userRepository.deleteById(id);
+            return;
+        }
+        throw new UserNotFoundException("id: " + id);
+    }
+
+    public void deleteUsers(Long companyId) {
+        this.userRepository.deleteAllByCompanyId(companyId);
     }
 }

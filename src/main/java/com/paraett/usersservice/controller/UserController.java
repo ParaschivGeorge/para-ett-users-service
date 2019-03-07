@@ -5,10 +5,13 @@ import com.paraett.usersservice.model.dtos.MassRegisterUserDto;
 import com.paraett.usersservice.model.dtos.OwnerRegisterUserDto;
 import com.paraett.usersservice.model.entities.User;
 import com.paraett.usersservice.service.UserService;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
@@ -46,5 +49,41 @@ public class UserController {
                 .toUri();
 
         return ResponseEntity.created(location).body(user);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<List<User>> getAllUsers(@RequestParam(required = false) Long companyId, @RequestParam(required = false) Long managerId) {
+        List<User> users = this.userService.getAllUsers(companyId, managerId);
+
+        return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUser(@PathVariable Long id) {
+        User user = this.userService.getUser(id);
+
+        return ResponseEntity.ok(user);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
+        User updatedUser = this.userService.updateUser(id, user);
+
+        return ResponseEntity.accepted().body(updatedUser);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deleteUser(@PathVariable Long id) {
+        this.userService.deleteUser(id);
+
+        // TODO: update the other services
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("")
+    public ResponseEntity<Object> deleteUsers(@RequestParam Long companyId) {
+        this.userService.deleteUsers(companyId);
+
+        return ResponseEntity.noContent().build();
     }
 }
