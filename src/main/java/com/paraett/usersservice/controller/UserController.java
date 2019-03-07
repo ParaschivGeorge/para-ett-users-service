@@ -1,5 +1,6 @@
 package com.paraett.usersservice.controller;
 
+import com.paraett.usersservice.model.dtos.AccountActivationUserDto;
 import com.paraett.usersservice.model.dtos.MassRegisterUserDto;
 import com.paraett.usersservice.model.dtos.OwnerRegisterUserDto;
 import com.paraett.usersservice.model.entities.User;
@@ -33,9 +34,17 @@ public class UserController {
     @PostMapping("/massRegister")
     public ResponseEntity<List<User>> massRegister(@RequestBody List<MassRegisterUserDto> massRegisterUserDtoList, @RequestParam Long companyId) {
         List<User> users = this.userService.massRegister(massRegisterUserDtoList, companyId);
-
         URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/users").queryParam("companyId", companyId).build().toUri();
 
         return ResponseEntity.created(location).body(users);
+    }
+
+    @PutMapping("/activateAccount")
+    public ResponseEntity<User> activateAccount(@RequestBody AccountActivationUserDto accountActivationUserDto) {
+        User user = this.userService.activateAccount(accountActivationUserDto);
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(user.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).body(user);
     }
 }
