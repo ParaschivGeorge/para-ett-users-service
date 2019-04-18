@@ -1,9 +1,8 @@
 package com.paraett.usersservice.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paraett.usersservice.exception.ActivationCodeInvalidException;
-import com.paraett.usersservice.exception.UserNotFoundException;
+import com.paraett.usersservice.exception.NotFoundException;
 import com.paraett.usersservice.model.dtos.AccountActivationUserDto;
 import com.paraett.usersservice.model.dtos.MassRegisterUserDto;
 import com.paraett.usersservice.model.dtos.OwnerRegisterUserDto;
@@ -14,11 +13,7 @@ import com.paraett.usersservice.repository.UserSpecifications;
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.client.HttpClientErrorException;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -74,7 +69,7 @@ public class UserService {
                     }
                 }
                 if (!managerFound) {
-                    throw new UserNotFoundException("manager email: " + massRegisterUserDto.getManagerEmail());
+                    throw new NotFoundException("manager email: " + massRegisterUserDto.getManagerEmail());
                 }
             }
         }
@@ -132,7 +127,7 @@ public class UserService {
                 throw new ActivationCodeInvalidException("Activation code invalid!");
             }
         } else {
-            throw new UserNotFoundException("email: " + accountActivationUserDto.getEmail());
+            throw new NotFoundException("email: " + accountActivationUserDto.getEmail());
         }
     }
 
@@ -145,7 +140,7 @@ public class UserService {
         if (optionalUser.isPresent()) {
             return optionalUser.get();
         }
-        throw new UserNotFoundException("id: " + id);
+        throw new NotFoundException("id: " + id);
     }
 
     public User updateUser(Long id, User updatedUser) {
@@ -172,7 +167,7 @@ public class UserService {
                 if (optionalManager.isPresent()) {
                     user.setManagerId(updatedUser.getManagerId());
                 } else {
-                    throw new UserNotFoundException("manager id: " + updatedUser.getManagerId());
+                    throw new NotFoundException("manager id: " + updatedUser.getManagerId());
                 }
             }
             if (updatedUser.getCompanyId() != null) {
@@ -186,7 +181,7 @@ public class UserService {
             }
             return this.userRepository.save(user);
         }
-        throw new UserNotFoundException("id: " + id);
+        throw new NotFoundException("id: " + id);
     }
 
     public void deleteUser(Long id) {
@@ -194,7 +189,7 @@ public class UserService {
             this.userRepository.deleteById(id);
             return;
         }
-        throw new UserNotFoundException("id: " + id);
+        throw new NotFoundException("id: " + id);
     }
 
     public void deleteUsers(Long companyId) {
