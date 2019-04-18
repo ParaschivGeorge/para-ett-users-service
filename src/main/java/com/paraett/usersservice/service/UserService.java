@@ -19,10 +19,7 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -37,6 +34,10 @@ public class UserService {
     }
 
     public User registerOwner(OwnerRegisterUserDto ownerRegisterUserDto, Long companyId) {
+
+        Date date = new Date();
+
+
         User user = new User(
                 ownerRegisterUserDto.getFirstName(),
                 ownerRegisterUserDto.getLastName(),
@@ -50,7 +51,7 @@ public class UserService {
                 null,
                 companyId,
                 ownerRegisterUserDto.getNorm(),
-                ownerRegisterUserDto.getSalary());
+                calculateFreeDaysLeft(ownerRegisterUserDto.getFreeDaysTotal()));
         user = this.userRepository.save(user);
 
         return user;
@@ -100,7 +101,7 @@ public class UserService {
                             optionalManager.get().getId(),
                             companyId,
                             massRegisterUserDto.getNorm(),
-                            massRegisterUserDto.getSalary()
+                            calculateFreeDaysLeft(massRegisterUserDto.getFreeDaysTotal())
                     ));
 
                     users.add(user);
@@ -180,8 +181,8 @@ public class UserService {
             if (updatedUser.getNorm() != null) {
                 user.setNorm(updatedUser.getNorm());
             }
-            if (updatedUser.getSalary() != null) {
-                user.setSalary(updatedUser.getSalary());
+            if (updatedUser.getFreeDaysLeft() != null) {
+                user.setFreeDaysLeft(updatedUser.getFreeDaysLeft() );
             }
             return this.userRepository.save(user);
         }
@@ -198,5 +199,12 @@ public class UserService {
 
     public void deleteUsers(Long companyId) {
         this.userRepository.deleteAllByCompanyId(companyId);
+    }
+
+    private Integer calculateFreeDaysLeft(Integer freeDaysTotal) {
+        Calendar calendar = Calendar.getInstance();
+        int dayOfYear = calendar.get(Calendar.DAY_OF_YEAR);
+
+        return (int)Math.ceil((365.25 - dayOfYear) * freeDaysTotal / 365.25);
     }
 }

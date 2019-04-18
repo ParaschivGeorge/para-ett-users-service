@@ -9,7 +9,7 @@ public class MassRegisterUserDto {
     private UserType type;
     private String managerEmail;
     private Integer norm;
-    private Double salary;
+    private Integer freeDaysTotal;
 
     public String getEmail() {
         return email;
@@ -59,11 +59,11 @@ public class MassRegisterUserDto {
         this.norm = norm;
     }
 
-    public Double getSalary() {
-        return salary;
+    public Integer getFreeDaysTotal() {
+        return freeDaysTotal;
     }
 
-    public void setSalary(Double salary) {
-        this.salary = salary;
+    public void setFreeDaysTotal(Integer freeDaysTotal) {
+        this.freeDaysTotal = freeDaysTotal;
     }
 }

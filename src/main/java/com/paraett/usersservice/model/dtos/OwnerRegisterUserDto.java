@@ -6,7 +6,7 @@ public class OwnerRegisterUserDto {
     private String email;
     private String password;
     private Integer norm;
-    private Double salary;
+    private Integer freeDaysTotal;
 
     public String getFirstName() {
         return firstName;
@@ -48,12 +48,12 @@ public class OwnerRegisterUserDto {
         this.norm = norm;
     }
 
-    public Double getSalary() {
-        return salary;
+    public Integer getFreeDaysTotal() {
+        return freeDaysTotal;
     }
 
-    public void setSalary(Double salary) {
-        this.salary = salary;
+    public void setFreeDaysTotal(Integer freeDaysTotal) {
+        this.freeDaysTotal = freeDaysTotal;
     }
 
     public OwnerRegisterUserDto() {

@@ -2,16 +2,13 @@ package com.paraett.usersservice.model.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.paraett.usersservice.model.enums.UserType;
-import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "user_tbl")
-@DynamicUpdate
-public class  User {
+public class User {
 
     @Id
     @Column(name = "user_id")
@@ -60,8 +57,16 @@ public class  User {
     @Column
     private Integer norm;
 
+    public Integer getFreeDaysLeft() {
+        return freeDaysLeft;
+    }
+
+    public void setFreeDaysLeft(Integer freeDaysLeft) {
+        this.freeDaysLeft = freeDaysLeft;
+    }
+
     @Column
-    private Double salary;
+    private Integer freeDaysLeft;
 
     public Long getId() {
         return id;
@@ -167,18 +172,10 @@ public class  User {
         this.norm = norm;
     }
 
-    public Double getSalary() {
-        return salary;
-    }
-
-    public void setSalary(Double salary) {
-        this.salary = salary;
-    }
-
     public User() {
     }
 
-    public User(String firstName, String lastName, String email, UserType type, boolean enabled, String password, Date lastPasswordResetDate, Date lastLoginDate, Date currentLoginDate, Long managerId, Long companyId, Integer norm, Double salary) {
+    public User(String firstName, String lastName, String email, UserType type, boolean enabled, String password, Date lastPasswordResetDate, Date lastLoginDate, Date currentLoginDate, Long managerId, Long companyId, Integer norm, Integer freeDaysLeft) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -191,6 +188,6 @@ public class  User {
         this.managerId = managerId;
         this.companyId = companyId;
         this.norm = norm;
-        this.salary = salary;
+        this.freeDaysLeft = freeDaysLeft;
     }
 }
