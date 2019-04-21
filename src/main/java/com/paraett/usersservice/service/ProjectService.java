@@ -5,6 +5,7 @@ import com.paraett.usersservice.model.dtos.ProjectDto;
 import com.paraett.usersservice.model.entities.Project;
 import com.paraett.usersservice.model.entities.User;
 import com.paraett.usersservice.repository.ProjectRepository;
+import com.paraett.usersservice.repository.ProjectSpecifications;
 import com.paraett.usersservice.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -76,8 +77,8 @@ public class ProjectService {
         return optionalProject.get();
     }
 
-    public List<Project> getProjects() {
-        return projectRepository.findAll();
+    public List<Project> getProjects(Long companyId, Long responsibleId) {
+        return projectRepository.findAll(ProjectSpecifications.findAllFiltered(companyId, responsibleId));
     }
 
     public void deleteProject(Long id) {
