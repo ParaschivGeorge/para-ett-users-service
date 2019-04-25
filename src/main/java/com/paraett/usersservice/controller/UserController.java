@@ -5,13 +5,10 @@ import com.paraett.usersservice.model.dtos.MassRegisterUserDto;
 import com.paraett.usersservice.model.dtos.OwnerRegisterUserDto;
 import com.paraett.usersservice.model.entities.User;
 import com.paraett.usersservice.service.UserService;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
