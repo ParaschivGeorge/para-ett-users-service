@@ -1,6 +1,5 @@
 package com.paraett.usersservice.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.paraett.usersservice.exception.ActivationCodeInvalidException;
 import com.paraett.usersservice.exception.NotFoundException;
 import com.paraett.usersservice.model.dtos.AccountActivationUserDto;
@@ -21,11 +20,11 @@ public class UserService {
 
     private UserRepository userRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-    private ObjectMapper objectMapper;
+    private EmailService emailService;
 
-    public UserService(UserRepository userRepository, ObjectMapper objectMapper) {
+    public UserService(UserRepository userRepository, EmailService emailService) {
         this.userRepository = userRepository;
-        this.objectMapper = objectMapper;
+        this.emailService = emailService;
     }
 
     public User registerOwner(OwnerRegisterUserDto ownerRegisterUserDto, Long companyId) {
@@ -101,7 +100,7 @@ public class UserService {
 
                     users.add(user);
 
-                    //TODO: send email;
+                    emailService.sendAccountActivationMessage(user.getEmail(), user.getPassword());
 
                 } else {
                     addedAll = false;
