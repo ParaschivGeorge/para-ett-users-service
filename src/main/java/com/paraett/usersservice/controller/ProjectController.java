@@ -44,8 +44,8 @@ public class ProjectController {
     }
 
     @GetMapping("")
-    public ResponseEntity<List<Project>> getProjects(@RequestParam(required = false) Long companyId, @RequestParam(required = false) Long responsibleId) {
-        List<Project> projects = projectService.getProjects(companyId, responsibleId);
+    public ResponseEntity<List<Project>> getProjects(@RequestParam(required = false) Long companyId, @RequestParam(required = false) Long responsibleId, @RequestParam(required = false) Long userId) {
+        List<Project> projects = projectService.getProjects(companyId, responsibleId, userId);
 
         return ResponseEntity.ok(projects);
     }

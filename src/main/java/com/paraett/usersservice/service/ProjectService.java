@@ -80,8 +80,8 @@ public class ProjectService {
         return optionalProject.get();
     }
 
-    public List<Project> getProjects(Long companyId, Long responsibleId) {
-        return projectRepository.findAll(ProjectSpecifications.findAllFiltered(companyId, responsibleId));
+    public List<Project> getProjects(Long companyId, Long responsibleId, Long userId) {
+        return projectRepository.findAll(ProjectSpecifications.findAllFiltered(companyId, responsibleId, userId));
     }
 
     public void deleteProject(Long id) {
