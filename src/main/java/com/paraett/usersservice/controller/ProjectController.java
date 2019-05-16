@@ -21,7 +21,7 @@ public class ProjectController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Project> addProject(ProjectDto projectDto) {
+    public ResponseEntity<Project> addProject(@RequestBody ProjectDto projectDto) {
         Project project = projectService.addProject(projectDto);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(project.getId())
                 .toUri();

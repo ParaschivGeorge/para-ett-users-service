@@ -31,6 +31,9 @@ public class ProjectService {
         Project project = new Project(projectDto.getCompanyId(), projectDto.getResponsibleId(), projectDto.getName());
 
         Set<User> users = project.getUsers();
+        if (users == null) {
+            users = new HashSet<>();
+        }
         for (Long userId: projectDto.getUsers()) {
             Optional<User> user = userRepository.findById(userId);
             if (user.isPresent()) {

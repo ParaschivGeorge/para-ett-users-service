@@ -4,7 +4,6 @@ public class OwnerRegisterUserDto {
     private String firstName;
     private String lastName;
     private String email;
-    private String password;
     private Integer norm;
     private Integer freeDaysTotal;
 
@@ -30,14 +29,6 @@ public class OwnerRegisterUserDto {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public Integer getNorm() {

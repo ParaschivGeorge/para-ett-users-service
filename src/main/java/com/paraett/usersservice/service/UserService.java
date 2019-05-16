@@ -31,14 +31,13 @@ public class UserService {
 
         Date date = new Date();
 
-
         User user = new User(
                 ownerRegisterUserDto.getFirstName(),
                 ownerRegisterUserDto.getLastName(),
                 ownerRegisterUserDto.getEmail(),
                 UserType.OWNER,
-                true,
-                bCryptPasswordEncoder.encode(ownerRegisterUserDto.getPassword()),
+                false,
+                bCryptPasswordEncoder.encode(RandomStringUtils.random(12, true, true)),
                 new Date(),
                 new Date(),
                 new Date(),
@@ -47,6 +46,8 @@ public class UserService {
                 ownerRegisterUserDto.getNorm(),
                 calculateFreeDaysLeft(ownerRegisterUserDto.getFreeDaysTotal()));
         user = this.userRepository.save(user);
+
+        emailService.sendAccountActivationMessage(user.getEmail(), user.getPassword());
 
         return user;
     }

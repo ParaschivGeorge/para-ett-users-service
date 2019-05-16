@@ -33,6 +33,7 @@ public class UserController {
 
     @PostMapping("/massRegister")
     public ResponseEntity<List<User>> massRegister(@RequestBody List<MassRegisterUserDto> massRegisterUserDtoList, @RequestParam Long companyId) {
+        System.out.println("TETS");
         List<User> users = this.userService.massRegister(massRegisterUserDtoList, companyId);
         URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/users").queryParam("companyId", companyId).build().toUri();
 

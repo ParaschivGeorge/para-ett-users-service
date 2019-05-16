@@ -1,6 +1,9 @@
 package com.paraett.usersservice.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import java.util.Set;
 
 @Entity
@@ -18,8 +21,10 @@ public class Project {
     @Column(name="responsible_id")
     private Long responsibleId;
 
+    @Max(50)
     private String name;
 
+//    @JsonManagedReference
     @ManyToMany
     private Set<User> users;
 

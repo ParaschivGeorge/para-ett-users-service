@@ -1,9 +1,14 @@
 package com.paraett.usersservice.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.paraett.usersservice.model.enums.UserType;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 import java.util.Date;
 import java.util.Set;
 
@@ -16,12 +21,17 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Max(50)
+    @Pattern(regexp = "[a-zA-Z ]*", message = "Name invalid!")
     @Column(nullable = false, length = 100)
     private String firstName;
 
+    @Max(50)
+    @Pattern(regexp = "[a-zA-Z ]*", message = "Name invalid!")
     @Column(nullable = false, length = 100)
     private String lastName;
 
+    @Email
     @Column(unique = true, nullable = false, length = 50)
     private String email;
 
@@ -55,12 +65,17 @@ public class User {
     @Column(name="company_id")
     private Long companyId;
 
+    @Max(8)
+    @Min(0)
     @Column
     private Integer norm;
 
+    @Min(0)
     @Column
     private Integer freeDaysLeft;
 
+    @JsonBackReference
+//    @JsonIgnore
     @ManyToMany
     private Set<Project> projects;
 
