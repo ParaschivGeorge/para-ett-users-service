@@ -14,6 +14,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Service
 public class UserService {
@@ -21,10 +23,12 @@ public class UserService {
     private UserRepository userRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
     private EmailService emailService;
+    private ExecutorService executorService;
 
     public UserService(UserRepository userRepository, EmailService emailService) {
         this.userRepository = userRepository;
         this.emailService = emailService;
+        this.executorService = Executors.newWorkStealingPool();
     }
 
     public User registerOwner(OwnerRegisterUserDto ownerRegisterUserDto, Long companyId) {
@@ -47,7 +51,8 @@ public class UserService {
                 calculateFreeDaysLeft(ownerRegisterUserDto.getFreeDaysTotal()));
         user = this.userRepository.save(user);
 
-        emailService.sendAccountActivationMessage(user.getEmail(), user.getPassword());
+        User finalUser = user;
+        executorService.execute(() -> emailService.sendAccountActivationMessage(finalUser.getEmail(), finalUser.getPassword()));
 
         return user;
     }
@@ -101,7 +106,7 @@ public class UserService {
 
                     users.add(user);
 
-                    emailService.sendAccountActivationMessage(user.getEmail(), user.getPassword());
+                    executorService.execute(() -> emailService.sendAccountActivationMessage(user.getEmail(), user.getPassword()));
 
                 } else {
                     addedAll = false;
