@@ -3,6 +3,7 @@ package com.paraett.usersservice.model.entities;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.paraett.usersservice.model.enums.UserType;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -21,14 +22,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Max(50)
+    @Length(max=50)
     @Pattern(regexp = "[a-zA-Z ]*", message = "Name invalid!")
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 50)
     private String firstName;
 
-    @Max(50)
+    @Length(max=50)
     @Pattern(regexp = "[a-zA-Z ]*", message = "Name invalid!")
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false, length = 50)
     private String lastName;
 
     @Email
