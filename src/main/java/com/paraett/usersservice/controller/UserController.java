@@ -63,6 +63,13 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
+    @GetMapping("/email/{email}")
+    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+        User user = this.userService.getUserByEmail(email);
+
+        return ResponseEntity.ok(user);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
         User updatedUser = this.userService.updateUser(id, user);

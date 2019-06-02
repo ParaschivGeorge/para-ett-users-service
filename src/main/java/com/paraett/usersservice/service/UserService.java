@@ -207,4 +207,12 @@ public class UserService {
 
         return (int)Math.ceil((365.25 - dayOfYear) * freeDaysTotal / 365.25);
     }
+
+    public User getUserByEmail(String email) {
+        Optional<User> optionalUser = this.userRepository.findByEmail(email);
+        if (optionalUser.isPresent()) {
+            return optionalUser.get();
+        }
+        throw new NotFoundException("email: " + email);
+    }
 }
