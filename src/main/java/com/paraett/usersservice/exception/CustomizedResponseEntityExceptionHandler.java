@@ -44,4 +44,11 @@ public class CustomizedResponseEntityExceptionHandler  extends ResponseEntityExc
                 request.getDescription(false));
         return new ResponseEntity(exceptionResponse, HttpStatus.FORBIDDEN);
     }
+
+    @ExceptionHandler(InvalidUserTypeException.class)
+    public final ResponseEntity<Object> handleUserNotFoundException(InvalidUserTypeException ex, WebRequest request) {
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
+                request.getDescription(false));
+        return new ResponseEntity(exceptionResponse, HttpStatus.FORBIDDEN);
+    }
 }

@@ -1,6 +1,7 @@
 package com.paraett.usersservice.service;
 
 import com.paraett.usersservice.exception.ActivationCodeInvalidException;
+import com.paraett.usersservice.exception.InvalidUserTypeException;
 import com.paraett.usersservice.exception.NotFoundException;
 import com.paraett.usersservice.model.dtos.AccountActivationUserDto;
 import com.paraett.usersservice.model.dtos.MassRegisterUserDto;
@@ -64,6 +65,9 @@ public class UserService {
 
         // Check if all managers are set
         for (MassRegisterUserDto massRegisterUserDto: massRegisterUserDtoList) {
+            if (massRegisterUserDto.getType() == UserType.ADMIN) {
+                throw new InvalidUserTypeException("Invalid user type found!");
+            }
             if (!this.userRepository.findByEmail(massRegisterUserDto.getManagerEmail()).isPresent()) {
                 Boolean managerFound = false;
                 for (MassRegisterUserDto massRegisterUserDto1: massRegisterUserDtoList) {
