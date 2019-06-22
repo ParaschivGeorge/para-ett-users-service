@@ -23,9 +23,8 @@ public class EmailService {
     }
 
     public void sendAccountActivationMessage(String to, String code) {
-        // TODO: move host to properties
         String subject = "Para-ETT Account Activation";
-        String text = "Welcome to Para-ETT!\n\n To activate your account access the url: http://localhost:4200/activation" +
+        String text = "Welcome to Para-ETT!\n\n To activate your account access the url: https://para-ett.web.app/activation" +
                 "?email=" + to +
                 "&code=" + code +
                 "\n\nFor support contact us at: para.ett.app@gmail.com\n Thank you for using our application.";
